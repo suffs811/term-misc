@@ -1,4 +1,4 @@
-# terminator-box
+# terminator vm files
 files for terminator virtual machine that will help people learn how to use the terminator tool and conduct testing on it
 
 # credit
