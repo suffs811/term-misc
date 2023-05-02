@@ -3,6 +3,7 @@
 # Copyright (c) 2023 suffs811
 # https://github.com/suffs811/the-terminator.git
 # read the README.md file for more details; software distributed under MIT license
+#
 # <> purpose: automate enumeration, privilege escalation, persistence, exfiltration, and reporting stages of a pentest
 # initial shell will need to be done manually
 #
@@ -59,7 +60,7 @@ print('''
    | |  | |__  | |__) | \  / | | | |  \| |  /  \  | | | |  | | |__) |
    | |  |  __| |  _  /| |\/| | | | | . ` | / /\ \ | | | |  | |  _  / 
    | |  | |____| | \ \| |  | |_| |_| |\  |/ ____ \| | | |__| | | \ \ 
-   |_|  |______|_|  \_\_|  |_|_____|_| \_/_/    \_\_|  \____/|_|  \_\
+   |_|  |______|_|  \_\_|  |_|_____|_| \_/_/    \_\_|  \____/|_|  \_\ 
 \n
 \\ created by: suffs811
 \\ https://github.com/suffs811/the-terminator.git
@@ -123,7 +124,7 @@ def init_scan(ip):
    return services
 
 
-# enumerate web service with nikto, gobuster, curl, and searchsploit
+# enumerate web service with nikto, gobuster, curl
 def web(ip,wordlist,services):
    print("\n### initiating web enumeration... ###")
    web_port = []
@@ -158,7 +159,10 @@ def web(ip,wordlist,services):
                os.system("echo '{}' >> /terminator/robots_dir.txt".format(line))
             else:
                continue
-      os.system("curl http://{}:{} > /terminator/curl.txt".format(ip,port.strip()))
+
+      # look for 'username' and 'password' in web pages
+      os.system("echo '/# curl results #' > /terminator/curl.txt")
+      os.system("curl http://{}:{} >> /terminator/curl.txt".format(ip,port.strip()))
       curl = open("/terminator/curl.txt")
       c = curl.readlines()
       for line in c:
@@ -170,9 +174,8 @@ def web(ip,wordlist,services):
                c_find = curl_find.readlines()
                for lin in c_find:
                   if "password" in lin or "username" in lin:
-                     os.system("echo {} | tee -a /terminator/enum.txt /terminator/curl_pass.txt".format(lin))
+                     os.system("echo '{} #found in {}#' | tee -a /terminator/enum.txt /terminator/curl_pass.txt".format(lin,sec))
                curl_find.close()
-
       curl.close()
 
    print("\n### web enum output saved to /terminator/enum.txt ###")
