@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>the terminator</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <h1>the terminator</h1>
+    <p>please enter the IP address you want to terminate:</p>
+    <form action="/submit" method="POST">
+      <label for="ip">IP address:</label>
+      <input type="text" id="ip" name="ip" required>
+      <br><br>
+      <input type="submit" value="terminate">
+    </form>
+  </body>
+</html>
